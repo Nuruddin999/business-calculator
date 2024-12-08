@@ -6,9 +6,11 @@ import InputField from "@/components/ui/InputField";
 import CustomButton from "@/components/ui/button";
 import {getActualColors, GithubChart} from "@/components/GithubChart";
 import Participant from "@/components/Participant";
+import dynamic from "next/dynamic";
 
 
 type SharesData = Array<{ name: string, sum: number, share: string }>
+const AChart = dynamic(() => import('../components/ApacheChart/ApacheChart'))
 
 export default function Home() {
     const [name, setName] = useState('');
@@ -89,8 +91,7 @@ export default function Home() {
                         })}
                     </div>
                 </div>
-                <div className={styles.chartSide}>
-                </div>
+                {data.length > 0 && <AChart data={data} />}
             </div>
         </div>
     );

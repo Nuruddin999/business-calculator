@@ -4,41 +4,24 @@ import { CanvasRenderer } from "echarts/renderers";
 import { init, getInstanceByDom, use } from "echarts/core";
 import {PieChart} from "echarts/charts";
 import {
-    LegendComponent,
-    GridComponent,
     TooltipComponent,
-    ToolboxComponent,
-    TitleComponent,
-    DataZoomComponent,
 } from "echarts/components";
 import type { ECharts, ComposeOption, SetOptionOpts } from "echarts/core";
 import type {
-    BarSeriesOption,
-    LineSeriesOption,
-    ScatterSeriesOption,
+
     PieSeriesOption
 } from "echarts/charts";
-import type { TitleComponentOption, GridComponentOption } from "echarts/components";
+
 import styles from "./achart.module.scss"
 
 use([
-    LegendComponent,
     PieChart,
-    GridComponent,
     TooltipComponent,
-    TitleComponent,
-    ToolboxComponent,
-    DataZoomComponent,
     CanvasRenderer,
 ]);
 
 // Combine an Option type with only required components and charts via ComposeOption
 export type EChartsOption = ComposeOption<
-    | BarSeriesOption
-    | LineSeriesOption
-    | TitleComponentOption
-    | GridComponentOption
-    | ScatterSeriesOption
     | PieSeriesOption
 >;
 

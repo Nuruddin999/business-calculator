@@ -77,7 +77,7 @@ export default function Home() {
                             className={styles.sumInp}
                             type={"number"}/>
                         <div className={styles.calcButton}>
-                            <CustomButton type={"submit"}>=</CustomButton>
+                            <CustomButton type={"submit"}>+</CustomButton>
                         </div>
                     </form>
                     <div className={styles.horizontalChart}>

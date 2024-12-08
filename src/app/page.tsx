@@ -86,7 +86,7 @@ export default function Home() {
                     <div className={styles.dataWrapper}>
                         {data.sort((a, b) => b.sum - a.sum).map((el,index) => {
                             const actualColors = getActualColors(data)
-                            return <Participant person={el} handleDelete={handleDelete} actualColor={actualColors[index]} />
+                            return <Participant person={el} handleDelete={handleDelete} actualColor={actualColors[index]} key={el.name}/>
                         })}
                     </div>
                 </div>

@@ -1,46 +1,95 @@
-import React from "react"
-import styles from "./achart.module.scss";
-// import ReactECharts from "echarts-for-react";
+import {useRef, useEffect, CSSProperties} from "react";
+import { CanvasRenderer } from "echarts/renderers";
+import { init, getInstanceByDom, use } from "echarts/core";
+import {PieChart} from "echarts/charts";
+import {
+    LegendComponent,
+    GridComponent,
+    TooltipComponent,
+    ToolboxComponent,
+    TitleComponent,
+    DataZoomComponent,
+} from "echarts/components";
+import type { ECharts, ComposeOption, SetOptionOpts } from "echarts/core";
+import type {
+    BarSeriesOption,
+    LineSeriesOption,
+    ScatterSeriesOption,
+    PieSeriesOption
+} from "echarts/charts";
+import type { TitleComponentOption, GridComponentOption } from "echarts/components";
+import styles from "./achart.module.scss"
 
+use([
+    LegendComponent,
+    PieChart,
+    GridComponent,
+    TooltipComponent,
+    TitleComponent,
+    ToolboxComponent,
+    DataZoomComponent,
+    CanvasRenderer,
+]);
 
+// Combine an Option type with only required components and charts via ComposeOption
+export type EChartsOption = ComposeOption<
+    | BarSeriesOption
+    | LineSeriesOption
+    | TitleComponentOption
+    | GridComponentOption
+    | ScatterSeriesOption
+    | PieSeriesOption
+>;
 
-
-const ApacheChart = ({data}: { data:any}) => {
-    return <div className={styles.chartSideBlock}>
-        {/*<div className={styles.chartSide}>*/}
-        {/*    <ReactECharts*/}
-        {/*        option={{*/}
-        {/*            title: {*/}
-        {/*                text: 'Участники',*/}
-        {/*                left: 'center'*/}
-        {/*            },*/}
-        {/*            legend: {*/}
-        {/*                bottom: 10,*/}
-        {/*                left: 'center',*/}
-        {/*                data: data.map((item:{name:string,sum:string})=>item.name)*/}
-        {/*            },*/}
-        {/*            series: [*/}
-        {/*                {*/}
-        {/*                    type: 'pie',*/}
-        {/*                    radius: '85%',*/}
-        {/*                    data: data.map((item:{name:string,sum:string}) => ({name: item.name, value: item.sum})),*/}
-        {/*                    emphasis: {*/}
-        {/*                        itemStyle: {*/}
-        {/*                            shadowBlur: 10,*/}
-        {/*                            shadowOffsetX: 0,*/}
-        {/*                            shadowColor: 'rgba(0, 0, 0, 0.5)'*/}
-        {/*                        }*/}
-        {/*                    }*/}
-        {/*                }*/}
-        {/*            ]*/}
-        {/*        }}*/}
-        {/*        style={{height: '70vh', width: '100%'}}*/}
-        {/*        notMerge={true}*/}
-        {/*        lazyUpdate={true}*/}
-        {/*        theme={"theme_name"}*/}
-        {/*    />*/}
-        {/*</div>*/}
-    </div>
+export interface ReactEChartsProps {
+    option: EChartsOption;
+    style?: CSSProperties;
+    settings?: SetOptionOpts;
+    loading?: boolean;
+    theme?: "light" | "dark";
 }
 
-export default ApacheChart
+export function ReactECharts({
+                                 option,
+                                 style,
+                                 settings,
+                                 loading,
+                                 theme,
+                             }: ReactEChartsProps): JSX.Element {
+    const chartRef = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+
+        let chart: ECharts | undefined;
+        if (chartRef.current !== null) {
+            chart = init(chartRef.current, theme);
+        }
+
+        function resizeChart() {
+            chart?.resize();
+        }
+        window.addEventListener("resize", resizeChart);
+
+        return () => {
+            chart?.dispose();
+            window.removeEventListener("resize", resizeChart);
+        };
+    }, [theme]);
+
+    useEffect(() => {
+
+        if (chartRef.current !== null) {
+            const chart = getInstanceByDom(chartRef.current);
+            chart?.setOption(option, settings);
+        }
+    }, [option, settings, theme]);
+
+    useEffect(() => {
+        if (chartRef.current !== null) {
+            const chart = getInstanceByDom(chartRef.current);
+            loading === true ? chart?.showLoading() : chart?.hideLoading();
+        }
+    }, [loading, theme]);
+
+    return <div ref={chartRef} className={styles.chartSideBlock} style={{ width: "100%", height: "70vh",...style }} />;
+}

@@ -6,11 +6,12 @@ import InputField from "@/components/ui/InputField";
 import CustomButton from "@/components/ui/button";
 import {getActualColors, GithubChart} from "@/components/GithubChart";
 import Participant from "@/components/Participant";
-import dynamic from "next/dynamic";
+import {ReactECharts} from "@/components/ApacheChart/ApacheChart";
 
 
 type SharesData = Array<{ name: string, sum: number, share: string }>
-const AChart = dynamic(() => import('../components/ApacheChart/ApacheChart'))
+
+
 
 export default function Home() {
     const [name, setName] = useState('');
@@ -87,11 +88,36 @@ export default function Home() {
                     <div className={styles.dataWrapper}>
                         {data.sort((a, b) => b.sum - a.sum).map((el,index) => {
                             const actualColors = getActualColors(data)
-                            return <Participant person={el} handleDelete={handleDelete} actualColor={actualColors[index]} key={el.name}/>
+                            return <Participant person={el} handleDelete={handleDelete} actualColor={actualColors[index]} />
                         })}
                     </div>
                 </div>
-                {data.length > 0 && <AChart data={data} />}
+                {data.length > 0 && <ReactECharts option={{
+                    title: {
+                        text: 'Referer of a Website',
+                        subtext: 'Fake Data',
+                        left: 'center'
+                    },
+                    legend: {
+                        orient: 'vertical',
+                        left: 'left'
+                    },
+                    series: [
+                        {
+                            name: 'Access From',
+                            type: 'pie',
+                            radius: '70%',
+                            data: data.map(el=>({name:el.name,value:parseInt(el.share)})),
+                            emphasis: {
+                                itemStyle: {
+                                    shadowBlur: 10,
+                                    shadowOffsetX: 0,
+                                    shadowColor: 'rgba(0, 0, 0, 0.5)'
+                                }
+                            }
+                        }
+                    ]
+                }} />}
             </div>
         </div>
     );

@@ -11,7 +11,7 @@ import dynamic from "next/dynamic";
 
 type SharesData = Array<{ name: string, sum: number, share: string }>
 
-const Charts = dynamic(()=>import("../components/ApacheChart/ApacheChart"))
+const Charts = dynamic(()=>import("../components/ApacheChart/ApacheChart"),{ssr: false})
 
 export default function Home() {
     const [name, setName] = useState('');

@@ -11,7 +11,7 @@ import dynamic from "next/dynamic";
 
 type SharesData = Array<{ name: string, sum: number, share: string }>
 
-const Charts = dynamic(()=>import("../components/ApacheChart/ApacheChart"))
+//const Charts = dynamic(()=>import("../components/ApacheChart/ApacheChart"))
 
 export default function Home() {
     const [name, setName] = useState('');
@@ -92,32 +92,32 @@ export default function Home() {
                         })}
                     </div>
                 </div>
-                {data.length > 0 && <Charts option={{
-                    title: {
-                        text: 'Referer of a Website',
-                        subtext: 'Fake Data',
-                        left: 'center'
-                    },
-                    legend: {
-                        orient: 'vertical',
-                        left: 'left'
-                    },
-                    series: [
-                        {
-                            name: 'Access From',
-                            type: 'pie',
-                            radius: '70%',
-                            data: data.map(el=>({name:el.name,value:parseInt(el.share)})),
-                            emphasis: {
-                                itemStyle: {
-                                    shadowBlur: 10,
-                                    shadowOffsetX: 0,
-                                    shadowColor: 'rgba(0, 0, 0, 0.5)'
-                                }
-                            }
-                        }
-                    ]
-                }} />}
+                {/*{data.length > 0 && <Charts option={{*/}
+                {/*    title: {*/}
+                {/*        text: 'Referer of a Website',*/}
+                {/*        subtext: 'Fake Data',*/}
+                {/*        left: 'center'*/}
+                {/*    },*/}
+                {/*    legend: {*/}
+                {/*        orient: 'vertical',*/}
+                {/*        left: 'left'*/}
+                {/*    },*/}
+                {/*    series: [*/}
+                {/*        {*/}
+                {/*            name: 'Access From',*/}
+                {/*            type: 'pie',*/}
+                {/*            radius: '70%',*/}
+                {/*            data: data.map(el=>({name:el.name,value:parseInt(el.share)})),*/}
+                {/*            emphasis: {*/}
+                {/*                itemStyle: {*/}
+                {/*                    shadowBlur: 10,*/}
+                {/*                    shadowOffsetX: 0,*/}
+                {/*                    shadowColor: 'rgba(0, 0, 0, 0.5)'*/}
+                {/*                }*/}
+                {/*            }*/}
+                {/*        }*/}
+                {/*    ]*/}
+                {/*}} />}*/}
             </div>
         </div>
     );

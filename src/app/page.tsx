@@ -64,13 +64,13 @@ export default function Home() {
                 <div className={styles.dataSide}>
                     <form className={styles.inpts} onSubmit={handleSubmit}>
                         <InputField
-                            placeholder="Введи имя"
+                            placeholder="Введи имя участника"
                             required
                             onChange={handleNameChange}
                             value={name}
                             type={"text"}/>
                         <InputField
-                            placeholder="Введи свою сумму"
+                            placeholder="Введи сумму участника"
                             required
                             onChange={handleSumChange}
                             value={sum}

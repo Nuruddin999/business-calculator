@@ -1,79 +1,22 @@
-"use client"
-import {useRef, useEffect, CSSProperties} from "react";
-import { CanvasRenderer } from "echarts/renderers";
-import { init, getInstanceByDom, use } from "echarts/core";
-import {PieChart} from "echarts/charts";
-import {
-    TooltipComponent,
-} from "echarts/components";
-import type { ECharts, ComposeOption, SetOptionOpts } from "echarts/core";
-import type {
-
-    PieSeriesOption
-} from "echarts/charts";
-
+import React from "react";
+import {GITHUB_COLORS} from "@/components/GithubChart/colors";
+import {PieChart} from "@mui/x-charts/PieChart";
 import styles from "./achart.module.scss"
 
-use([
-    PieChart,
-    TooltipComponent,
-    CanvasRenderer,
-]);
-
-// Combine an Option type with only required components and charts via ComposeOption
-export type EChartsOption = ComposeOption<
-    | PieSeriesOption
->;
-
-export interface ReactEChartsProps {
-    option: EChartsOption;
-    style?: CSSProperties;
-    settings?: SetOptionOpts;
-    loading?: boolean;
-    theme?: "light" | "dark";
+type ParticipantProps = {
+    data: Array<any>
+}
+const DataChart: React.FC<ParticipantProps> = ({data}) => {
+    return <div className={styles.chartSideBlock}>
+        <PieChart
+            colors={Object.values(GITHUB_COLORS).map(el=>el.color || "")}
+            series={[
+                {
+                    data: data.map(el => ({value: el.sum, label: el.name})),
+                },
+            ]}
+        />
+    </div>
 }
 
-export default function ReactECharts({
-                                 option,
-                                 style,
-                                 settings,
-                                 loading,
-                                 theme,
-                             }: ReactEChartsProps): JSX.Element {
-    const chartRef = useRef<HTMLDivElement>(null);
-
-    useEffect(() => {
-
-        let chart: ECharts | undefined;
-        if (chartRef.current !== null) {
-            chart = init(chartRef.current, theme);
-        }
-
-        function resizeChart() {
-            chart?.resize();
-        }
-        window.addEventListener("resize", resizeChart);
-
-        return () => {
-            chart?.dispose();
-            window.removeEventListener("resize", resizeChart);
-        };
-    }, [theme]);
-
-    useEffect(() => {
-
-        if (chartRef.current !== null) {
-            const chart = getInstanceByDom(chartRef.current);
-            chart?.setOption(option, settings);
-        }
-    }, [option, settings, theme]);
-
-    useEffect(() => {
-        if (chartRef.current !== null) {
-            const chart = getInstanceByDom(chartRef.current);
-            loading === true ? chart?.showLoading() : chart?.hideLoading();
-        }
-    }, [loading, theme]);
-
-    return <div ref={chartRef} className={styles.chartSideBlock} style={{ width: "100%", height: "70vh",...style }} />;
-}
+export default DataChart;

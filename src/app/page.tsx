@@ -6,10 +6,17 @@ import InputField from "@/components/ui/InputField";
 import CustomButton from "@/components/ui/button";
 import {getActualColors, GithubChart} from "@/components/GithubChart";
 import Participant from "@/components/Participant";
+import { PieChart } from '@mui/x-charts/PieChart';
 import dynamic from "next/dynamic";
+import {GITHUB_COLORS} from "@/components/GithubChart/colors";
+import DataChart from "@/components/ApacheChart/ApacheChart";
 
 
 type SharesData = Array<{ name: string, sum: number, share: string }>
+
+const pieParams = {
+    margin: { right: 5 },
+};
 
 const Charts = dynamic(()=>import("../components/ApacheChart/ApacheChart"),{ssr: false})
 
@@ -92,32 +99,7 @@ export default function Home() {
                         })}
                     </div>
                 </div>
-                {data.length > 0 && <Charts option={{
-                    title: {
-                        text: 'Referer of a Website',
-                        subtext: 'Fake Data',
-                        left: 'center'
-                    },
-                    legend: {
-                        orient: 'vertical',
-                        left: 'left'
-                    },
-                    series: [
-                        {
-                            name: 'Access From',
-                            type: 'pie',
-                            radius: '70%',
-                            data: data.map(el=>({name:el.name,value:parseInt(el.share)})),
-                            emphasis: {
-                                itemStyle: {
-                                    shadowBlur: 10,
-                                    shadowOffsetX: 0,
-                                    shadowColor: 'rgba(0, 0, 0, 0.5)'
-                                }
-                            }
-                        }
-                    ]
-                }} />}
+                {data.length > 0 && <DataChart data={data}  />}
             </div>
         </div>
     );

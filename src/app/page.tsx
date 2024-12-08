@@ -6,19 +6,10 @@ import InputField from "@/components/ui/InputField";
 import CustomButton from "@/components/ui/button";
 import {getActualColors, GithubChart} from "@/components/GithubChart";
 import Participant from "@/components/Participant";
-import { PieChart } from '@mui/x-charts/PieChart';
-import dynamic from "next/dynamic";
-import {GITHUB_COLORS} from "@/components/GithubChart/colors";
 import DataChart from "@/components/ApacheChart/ApacheChart";
 
 
 type SharesData = Array<{ name: string, sum: number, share: string }>
-
-const pieParams = {
-    margin: { right: 5 },
-};
-
-const Charts = dynamic(()=>import("../components/ApacheChart/ApacheChart"),{ssr: false})
 
 export default function Home() {
     const [name, setName] = useState('');

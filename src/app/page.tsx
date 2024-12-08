@@ -6,12 +6,12 @@ import InputField from "@/components/ui/InputField";
 import CustomButton from "@/components/ui/button";
 import {getActualColors, GithubChart} from "@/components/GithubChart";
 import Participant from "@/components/Participant";
-import {ReactECharts} from "@/components/ApacheChart/ApacheChart";
+import dynamic from "next/dynamic";
 
 
 type SharesData = Array<{ name: string, sum: number, share: string }>
 
-
+const Charts = dynamic(()=>import("../components/ApacheChart/ApacheChart"))
 
 export default function Home() {
     const [name, setName] = useState('');
@@ -92,7 +92,7 @@ export default function Home() {
                         })}
                     </div>
                 </div>
-                {data.length > 0 && <ReactECharts option={{
+                {data.length > 0 && <Charts option={{
                     title: {
                         text: 'Referer of a Website',
                         subtext: 'Fake Data',
